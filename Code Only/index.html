@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="signup.js"></script>
+  <link rel="stylesheet" type="text/css" href="signup.css"/>
+  <title>Home</title>
+  <header> <b> User List </b>
+    <a id="hyperlink" href="signup.html">
+    <input type="button" class="button1" value="Add Profile" onload="loadUsers()"></input>
+    </a>
+  </header>
+</head>
+  <body>
+    <div class = "main">
+
+  <script>
+    var students = JSON.parse(httpGet('http://localhost:8080/students'))
+    for (var i = 0; i < students.length; i++) {
+    document.write('<div class="studentPage"><p><br>' + students[i].firstname + ' ' + students[i].lastname + '<br>' +
+     students[i].gender + '<br>' + students[i].course + ' <button class="button2" onclick="deleteUser('+students[i].id+')">Delete</button></p></div>')
+  }
+  function deleteUser(id){
+    var http = new XMLHttpRequest();
+  var url = "http://localhost:8080/students/" + id;
+   console.log(id);
+  http.open("DELETE", url, true);
+
+  //Send the proper header information along with the request
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+  http.onreadystatechange = function() {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+          alert("Deleted Profile");
+          location.reload();
+      }
+  }
+  http.send();
+  }
+  </script>
+  <div>
+  </body>
+</html>
